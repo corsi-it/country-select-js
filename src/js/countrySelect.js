@@ -780,6 +780,9 @@
 		n: "Cameroon (Cameroun)",
 		i: "cm"
 	}, {
+		n: "Canary Islands",
+		i: "ic"
+	}, {
 		n: "Canada",
 		i: "ca"
 	}, {
