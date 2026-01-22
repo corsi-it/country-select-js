@@ -270,13 +270,17 @@
 			// with correctly chosen flag is spelled out on blur. Also, correctly
 			// selects flag when field is autofilled
 			this.countryInput.on("blur" + this.ns, function() {
-                if(!that.countryInput.val()) {
-                    that.setCountry('');
-                    return;
-                } else if (that.countryInput.val() != that.getSelectedCountryData()?.name) {
-					that.setCountry(that.countryInput.val());
+				if(!that.countryInput.val()) {
+					that.setCountry('');
+					return;
+				} else {
+					var selectedCountryData = that.getSelectedCountryData();
+					if (that.countryInput.val() != (selectedCountryData ? selectedCountryData.name : null)) {
+						that.setCountry(that.countryInput.val());
+					}
 				}
-				that.countryInput.val(that.getSelectedCountryData()?.name || '');
+				var selectedCountryDataAfter = that.getSelectedCountryData();
+				that.countryInput.val((selectedCountryDataAfter ? selectedCountryDataAfter.name : null) || '');
 			});
 		},
 		_initAutoCountry: function() {
