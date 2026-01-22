@@ -60,25 +60,29 @@
 	position:absolute;
 	z-index:2;
 	list-style:none;
-	text-align:left;
+	text-align:left
+}
+.country-select .country-list .flag{
+	display:inline-block;
+	width:20px
+}
+.country-select .country-list{
 	padding:0;
 	margin:0 0 0 -1px;
 	-webkit-box-shadow:1px 1px 4px rgba(0, 0, 0, 0.2);
 	box-shadow:1px 1px 4px rgba(0, 0, 0, 0.2);
 	background-color:white;
 	border:1px solid #ccc;
-	white-space:nowrap;
-	max-height:200px;
-	overflow-y:scroll
-}
-.country-select .country-list .flag{
-	display:inline-block;
-	width:20px
+	white-space:nowrap
 }
 @media (max-width: 500px){
 	.country-select .country-list{
 		white-space:normal
 	}
+}
+.country-select .country-list{
+	max-height:200px;
+	overflow-y:scroll
 }
 .country-select .country-list .divider{
 	padding-bottom:5px;

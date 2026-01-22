@@ -1,12 +1,11 @@
 var gulp = require('gulp');
-var sass = require('gulp-sass');
+var sass = require('gulp-sass')(require('sass'));
 var prefix = require('gulp-autoprefixer');
 var notify = require('gulp-notify');
 var cleanCSS = require('gulp-clean-css');
-var minifyJS = require('gulp-minify');
+var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var webserver = require('gulp-webserver');
-var runSequence = require('run-sequence');
 
 gulp.task('scss', function () {
 	return gulp.src('./src/scss/countrySelect.scss')
@@ -36,7 +35,7 @@ gulp.task('js', function () {
 		.pipe(notify("javascript updated"));
 });
 
-gulp.task('handle-sources', ['scss', 'js']);
+gulp.task('handle-sources', gulp.parallel('scss', 'js'));
 
 gulp.task('minify-scss', function () {
 	return gulp.src('./build/css/countrySelect.css')
@@ -48,12 +47,13 @@ gulp.task('minify-scss', function () {
 
 gulp.task('minify-js', function () {
 	return gulp.src('./build/js/countrySelect.js')
-		.pipe(minifyJS({ext:{min:'.min.js'}}))
+		.pipe(uglify())
+		.pipe(rename({extname: '.min.js'}))
 		.pipe(gulp.dest('./build/js'))
 		.pipe(notify("javascript minified"));
 });
 
-gulp.task('minify-sources', ['minify-scss', 'minify-js']);
+gulp.task('minify-sources', gulp.parallel('minify-scss', 'minify-js'));
 
 gulp.task('webserver', function() {
 	gulp.src('.')
@@ -62,11 +62,9 @@ gulp.task('webserver', function() {
 			directoryListing: true,
 			open: './demo.html'
 		}));
-	gulp.watch('./src/scss/**/*.scss', ['scss']);
-	gulp.watch('./src/js/**/*.js', ['js']);
+	gulp.watch('./src/scss/**/*.scss', gulp.series('scss'));
+	gulp.watch('./src/js/**/*.js', gulp.series('js'));
 });
 
-gulp.task('default', ['handle-sources', 'webserver']);
-gulp.task('build', function() {
-	runSequence('handle-sources', 'minify-sources');
-});
+gulp.task('default', gulp.series('handle-sources', 'webserver'));
+gulp.task('build', gulp.series('handle-sources', 'minify-sources'));
